@@ -18,8 +18,8 @@ app.use(bodyParser.json());
 app.use('/api/utilisateur/', RouterUtilisateur)
 app.use('/api/horaire/', RouterHoraire)
 
-// app.get('/', (req, res) => {
-//     res.send("hello word")
-// });
+app.get('/', (req, res) => {
+    res.send("hello word")
+});
 
 module.exports = app;
