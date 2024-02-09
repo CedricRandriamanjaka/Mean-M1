@@ -11,10 +11,10 @@ var apiCompetences = require("./routes/competence");
 var apiServices = require("./routes/service");
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use("/api/services",apiServices)
-app.use("/api/competences",apiCompetences)
+app.use("/api/services", apiServices)
+app.use("/api/competences", apiCompetences)
 
 var mongoURI = "mongodb+srv://mihobyfahasoavana:crud-express@cluster0.eeg3doq.mongodb.net/mongo-express?retryWrites=true&w=majority";
 // var mongoURI = "mongodb+srv://Cedric:Cedric@meanproject.vuk6uvm.mongodb.net/?retryWrites=true&w=majority";
@@ -29,8 +29,8 @@ mongoose.connect(mongoURI).then(() => {
 app.use('/api/utilisateur/', RouterUtilisateur)
 app.use('/api/horaire/', RouterHoraire)
 
-// app.get('/', (req, res) => {
-//     res.send("hello word")
-// });
+app.get('/', (req, res) => {
+    res.send("hello word")
+});
 
 module.exports = app;
