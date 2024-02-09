@@ -1,0 +1,67 @@
+Apia beauti
+
+utilisateur
+    id 
+    nom
+    prenom
+    dateNaissance
+    genre
+    email
+    motdepasse
+    role
+    etat
+
+horaireEmploye
+    id
+    utilisateurID
+    jour
+    heureDebut
+    heureFin
+
+competence
+    id
+    nomCompetence
+
+profilEmployerEtClient
+    utilisateurID
+    competenceID
+
+favori
+    utilisateurIDClient   
+    utilisateurIDEmployer
+
+service
+    id
+    type
+    nom
+    description
+    prix
+    duree
+    commission
+
+ProfilService
+    serviceID
+    competenceID
+
+responsable
+    rendezVousId
+    utilisateurID
+    role
+
+rendezVous
+    id
+    serviceID 
+    utilisateurID
+    date
+    etat
+    payement
+
+depenceType
+    id
+    nomDepence
+
+depencesExtra
+    depenceTypeID
+    description
+    date
+    montant
