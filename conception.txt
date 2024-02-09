@@ -9,22 +9,22 @@ utilisateur
     email
     motdepasse
     role
-    etat
+    etat/
 
-horaireEmploye
+horaireEmployer
     id
     utilisateurID
     jour
     heureDebut
-    heureFin
+    heureFin/
 
 competence
     id
-    nomCompetence
+    nomCompetence/
 
 profilEmployerEtClient
     utilisateurID
-    competenceID
+    competenceID/
 
 favori
     utilisateurIDClient   
@@ -32,12 +32,13 @@ favori
 
 service
     id
-    type
+    debut
+    fin
     nom
     description
     prix
     duree
-    commission
+    commission/
 
 ProfilService
     serviceID
