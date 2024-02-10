@@ -1,5 +1,29 @@
 const Utilisateur = require('../models/utilisateur');
 
+async function inscription(nom, prenom, dateNaissance, genre, email, motdepasse) {
+    try {
+        const role = 1; // Mettre le rôle à 1
+        const etat = 'actif'; // Mettre l'état à 'actif'
+
+        // Appeler la fonction ajouterUtilisateur avec les données fournies
+        const utilisateurEnregistre = await ajouterUtilisateur(nom, prenom, dateNaissance, genre, email, motdepasse, role, etat);
+
+        // Retourner un objet contenant les informations sur l'inscription réussie
+        return {
+            type: 'success',
+            numeroErreur: null,
+            messageErreur: 'Inscription réussie'
+        };
+    } catch (error) {
+        // Retourner un objet contenant les informations sur l'erreur d'inscription
+        return {
+            type: 'erreur',
+            numeroErreur: error.code,
+            messageErreur: error.message
+        };
+    }
+}
+
 async function ajouterUtilisateur(nom, prenom, dateNaissance, genre, email, motdepasse, role, etat) {
     try {
         // Créer une instance de Utilisateur avec les données fournies
@@ -88,5 +112,6 @@ module.exports = {
     modifierUtilisateur,
     supprimerUtilisateur,
     listeUtilisateurs,
-    getUtilisateur
+    getUtilisateur,
+    inscription
 };

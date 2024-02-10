@@ -61,4 +61,13 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// route pur l inscription des clients
+router.post('/inscription', async (req, res) => {
+    const { nom, prenom, dateNaissance, genre, email, motdepasse } = req.body;
+    const reponse = await controllerUtilisateur.inscription(nom, prenom, dateNaissance, genre, email, motdepasse);
+
+    // Retourner la réponse en tant qu'objet JSON
+    res.json(reponse);
+});
+
 module.exports = router;
