@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -24,6 +25,8 @@ mongoose.connect(mongoURI).then(() => {
 }).catch((error) => {
     console.log(error)
 });
+
+app.use(cors());
 
 // app.use('/api/produit/', RouterProduit)
 app.use('/api/utilisateur/', RouterUtilisateur)

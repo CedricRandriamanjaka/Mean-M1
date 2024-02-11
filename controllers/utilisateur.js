@@ -12,20 +12,48 @@ async function inscription(nom, prenom, dateNaissance, genre, email, motdepasse)
         return {
             type: 'success',
             numeroErreur: null,
-            messageErreur: 'Inscription réussie'
+            messageErreur: 'Inscription réussie',
+            utilisateur: utilisateurEnregistre
         };
     } catch (error) {
         // Retourner un objet contenant les informations sur l'erreur d'inscription
         return {
-            type: 'erreur',
+            type: 'danger',
             numeroErreur: error.code,
             messageErreur: error.message
         };
     }
 }
 
+async function connection(email, motdepasse) {
+    const utilisateurExistant = await Utilisateur.findOne({ email });
+    if (utilisateurExistant.motdepasse === motdepasse) {
+        return utilisateurExistant;
+    } else {
+        return {
+            type: 'danger',
+            numeroErreur: null,
+            messageErreur: 'utilisateur non reconnue'
+        };
+    }
+}
+
+
+
+async function getUser(email) {
+    const utilisateurExistant = await Utilisateur.findOne({ email });
+    return utilisateurExistant;
+}
+
 async function ajouterUtilisateur(nom, prenom, dateNaissance, genre, email, motdepasse, role, etat) {
     try {
+        // Vérifier si l'e-mail est déjà présent dans la base de données
+        const utilisateurExistant = await Utilisateur.findOne({ email });
+
+        if (utilisateurExistant) {
+            throw new Error('Un utilisateur avec cet e-mail existe déjà.');
+        }
+
         // Créer une instance de Utilisateur avec les données fournies
         const nouvelUtilisateur = new Utilisateur({
             nom,
@@ -47,6 +75,7 @@ async function ajouterUtilisateur(nom, prenom, dateNaissance, genre, email, motd
         throw new Error('Impossible d\'ajouter un nouvel utilisateur : ' + error.message);
     }
 }
+
 
 async function modifierUtilisateur(id, nouveauNom, nouveauPrenom, nouvelleDateNaissance, nouveauGenre, nouveauEmail, nouveauMotdepasse, nouveauRole, nouvelEtat) {
     try {
@@ -113,5 +142,7 @@ module.exports = {
     supprimerUtilisateur,
     listeUtilisateurs,
     getUtilisateur,
-    inscription
+    inscription,
+    getUser,
+    connection
 };

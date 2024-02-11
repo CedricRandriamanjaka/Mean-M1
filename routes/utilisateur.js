@@ -70,4 +70,18 @@ router.post('/inscription', async (req, res) => {
     res.json(reponse);
 });
 
+// route pour getUser
+router.post('/connection', async (req, res) => {
+    const { email, motdepasse } = req.body;
+    const resultatConnexion = await controllerUtilisateur.connection(email, motdepasse);
+
+    if (resultatConnexion.email) {
+        req.session.utilisateur = resultatConnexion; // Mettre l'utilisateur dans la session
+        res.json(resultatConnexion);
+    } else {
+        res.status(400).send(resultatConnexion.messageErreur);
+    }
+});
+
+
 module.exports = router;
