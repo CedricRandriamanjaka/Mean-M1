@@ -61,4 +61,27 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// route pur l inscription des clients
+router.post('/inscription', async (req, res) => {
+    const { nom, prenom, dateNaissance, genre, email, motdepasse } = req.body;
+    const reponse = await controllerUtilisateur.inscription(nom, prenom, dateNaissance, genre, email, motdepasse);
+
+    // Retourner la réponse en tant qu'objet JSON
+    res.json(reponse);
+});
+
+// route pour getUser
+router.post('/connection', async (req, res) => {
+    const { email, motdepasse } = req.body;
+    const resultatConnexion = await controllerUtilisateur.connection(email, motdepasse);
+
+    if (resultatConnexion.email) {
+        req.session.utilisateur = resultatConnexion; // Mettre l'utilisateur dans la session
+        res.json(resultatConnexion);
+    } else {
+        res.status(400).send(resultatConnexion.messageErreur);
+    }
+});
+
+
 module.exports = router;
