@@ -27,15 +27,24 @@ async function inscription(nom, prenom, dateNaissance, genre, email, motdepasse)
 
 async function connection(email, motdepasse) {
     const utilisateurExistant = await Utilisateur.findOne({ email });
-    if (utilisateurExistant.motdepasse === motdepasse) {
-        return utilisateurExistant;
-    } else {
+    try {
+        if (utilisateurExistant.motdepasse === motdepasse) {
+            return utilisateurExistant;
+        } else {
+            return {
+                type: 'danger',
+                numeroErreur: null,
+                messageErreur: 'utilisateur non reconnue'
+            };
+        }
+    } catch {
         return {
             type: 'danger',
             numeroErreur: null,
             messageErreur: 'utilisateur non reconnue'
         };
     }
+
 }
 
 

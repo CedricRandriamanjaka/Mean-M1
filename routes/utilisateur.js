@@ -83,5 +83,17 @@ router.post('/connection', async (req, res) => {
     }
 });
 
+// route pour getUser
+router.get('/getUserSession', async (req, res) => {
+    req.session.utilisateur = resultatConnexion; // Mettre l'utilisateur dans la session
+    res.json(resultatConnexion);
+});
+
+// route pour getUser
+router.get('/deconnection', async (req, res) => {
+    req.session.destroy(); // Mettre l'utilisateur dans la session
+    res.json('effectuer');
+});
+
 
 module.exports = router;
