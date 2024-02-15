@@ -1,21 +1,20 @@
 const http = require('http');
 const express = require('express');
 const cors = require('cors');
-const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 const app = express();
+
+// Clé secrète pour signer les tokens JWT
+const secretKey = 'tok';
 
 // Middleware CORS
 app.use(cors());
-
-// Configuration de express-session
-app.use(session({
-    secret: '7530',
-    resave: false,
-    saveUninitialized: true
-}));
+app.use(express.json());
+app.use(cookieParser());
 
 // Importez et utilisez vos routes ici
-const routes = require('./app'); // Assurez-vous que le chemin est correct
+const routes = require('./app');
 app.use(routes);
 
 const server = http.createServer(app);
