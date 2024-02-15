@@ -88,7 +88,7 @@ router.post('/connection', async (req, res) => {
         // Enregistrer le token dans un cookie
         res.cookie('token', token, { maxAge: 3600000, httpOnly: true }); // MaxAge en millisecondes (1h dans cet exemple)
 
-        res.json({ token }); // Envoyer le token JWT sous forme d'objet JSON
+        res.json(resultatConnexion); // Envoyer le token JWT sous forme d'objet JSON
     } else {
         res.status(400).send(resultatConnexion.messageErreur);
         console.log("erreur de connection");
@@ -114,11 +114,13 @@ router.get('/getUserSession', async (req, res) => {
     }
 });
 
-// route pour getUser
+// route pour déconnexion
 router.get('/deconnection', async (req, res) => {
-    req.session.destroy(); // Mettre l'utilisateur dans la session
-    res.json('effectuer');
-});
+    // Effacer le cookie contenant le token
+    res.clearCookie('token');
 
+    // Envoyer une réponse indiquant que la déconnexion a été effectuée avec succès
+    res.status(200).send('Déconnexion réussie');
+});
 
 module.exports = router;
