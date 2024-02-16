@@ -17,9 +17,7 @@ class ServiceService {
       !description ||
       !prix ||
       !duree ||
-      !commission ||
-      !dateDebut ||
-      !dateFin
+      !commission
     ) {
       throw new Error('Veuillez remplir tous les champs.');
     }
