@@ -10,6 +10,7 @@ class ServiceService {
       commission,
       dateDebut,
       dateFin,
+      competences
     } = data;
 
     if (
@@ -31,9 +32,11 @@ class ServiceService {
         commission,
         dateDebut,
         dateFin,
+        competences,
       });
       await service.save();
-      return { success: true, message: 'Service created.' };
+
+      return { success: true, message: 'Service created.'};
     } catch (error) {
       throw new Error(error.message);
     }

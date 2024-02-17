@@ -9,9 +9,7 @@ var ServiceSchema = new Schema({
     commission : {  type: Number, required: true },
     dateDebut : Date,
     dateFin : Date,
-    competences : {type : Schema.Types.ObjectId , ref : 'Competence'},
+    competences : [{type : Schema.Types.ObjectId , ref : 'Competence'}],
 });
-
-
 
 module.exports = mongoose.model('Service',  ServiceSchema);

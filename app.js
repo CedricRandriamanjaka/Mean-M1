@@ -19,9 +19,7 @@ app.use(cors());
 app.use("/api/services", apiServices)
 app.use("/api/competences", apiCompetences) 
 
-// var mongoURI = "mongodb+srv://project-mean:project-mean@cluster0.eeg3doq.mongodb.net/mongo-express?retryWrites=true&w=majority";
-var mongoURI = "mongodb+srv://mihobyfahasoavana:crud-express@cluster0.eeg3doq.mongodb.net/mongo-express?retryWrites=true&w=majority";
-// var mongoURI = "mongodb+srv://Cedric:Cedric@meanproject.vuk6uvm.mongodb.net/?retryWrites=true&w=majority";
+var mongoURI = "mongodb+srv://Cedric:Cedric@meanproject.vuk6uvm.mongodb.net/?retryWrites=true&w=majority";
 
 mongoose.connect(mongoURI).then(() => {
     console.log("connection reussit")
