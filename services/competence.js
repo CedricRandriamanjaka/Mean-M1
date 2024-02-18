@@ -1,4 +1,5 @@
 const Competence = require('../models/competence');
+const ProfilEmployerEtClient = require('../models/profilEmployerEtClient');
 
 class CompetenceService {
   async ajoutCompetence(nomCompetence) {
@@ -17,6 +18,24 @@ class CompetenceService {
       return competences;
     } catch (error) {
       throw new Error(error.message);
+    }
+  }
+
+  async getCompetencesUtilisateur(id) {
+    const competences = [];
+    try {
+      const profils = await ProfilEmployerEtClient.find({ utilisateurID: id });
+      const competenceIDs = profils.map(profil => profil.competenceID);
+      for (let i = 0; i < competenceIDs.length; i++) {
+          const competence = await Competence.findOne({ _id: competenceIDs[i] });
+          if (competence) {
+              competences.push(competence);
+          }
+      }
+      return competences; // Retourne la liste d'objets compétence de l'utilisateur
+    } catch (error) {
+        console.error("Erreur lors de la récupération des compétences de l'utilisateur:", error);
+        return competences;
     }
   }
 
