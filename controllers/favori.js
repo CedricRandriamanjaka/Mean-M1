@@ -1,4 +1,4 @@
-const farovi = require('../models/favori');
+const favori = require('../models/favori');
 const Utililsateur = require('../models/utilisateur');
 
 async function getFavorisUtilisateur(id) {
@@ -19,26 +19,26 @@ async function getFavorisUtilisateur(id) {
     }
   }
 
-async function ajouterProfil(userID, competenceID) {
+async function ajouterFavori(userID, empID) {
     try {
         // Vérifier d'abord si le profil existe déjà
-        const existingProfil = await ProfilEmployerEtClient.findOne({
-            utilisateurID: userID,
-            competenceID: competenceID
+        const existingFavori = await favori.findOne({
+            utilisateurIDClient: userID,
+            utilisateurIDEmploye: empID
         });
 
-        if (existingProfil) {
+        if (existingFavori) {
             // Le profil existe déjà, vous pouvez choisir de ne rien faire ou de renvoyer un message
-            console.log('Le profil existe déjà');
+            console.log('Le favori existe déjà');
             // Vous pouvez choisir de renvoyer un message ou de ne rien faire ici
         } else {
             // Le profil n'existe pas encore, vous pouvez l'ajouter
-            const profil = new ProfilEmployerEtClient({
-                utilisateurID: userID,
-                competenceID: competenceID
+            const fv = new favori({
+                utilisateurIDClient: userID,
+                utilisateurIDEmploye: empID
             });
 
-            const profilAjoute = await profil.save(); // Enregistrez le profil dans la base de données et récupérez l'objet ajouté
+            const profilAjoute = await fv.save(); // Enregistrez le profil dans la base de données et récupérez l'objet ajouté
             console.log(profilAjoute);
             return profilAjoute; // Retournez l'objet ajouté (compétence)
         }
@@ -49,18 +49,18 @@ async function ajouterProfil(userID, competenceID) {
 
 
 
-async function suppProfil(userID, competenceID) {
+async function suppFavori(userID, empID) {
     try {
         // Recherche le profil à supprimer
-        const profil = await ProfilEmployerEtClient.deleteMany({
-            utilisateurID: userID,
-            competenceID: competenceID
+        const profil = await favori.deleteMany({
+            utilisateurIDClient: userID,
+            utilisateurIDEmploye: empID
         });
 
         if (!profil) {
-            throw new Error('Erreur lors de la suppression du profil.');
+            throw new Error('Erreur lors de la suppression du favori.');
         }
-        return { success: true, message: 'Profil et compétence supprimés avec succès.' };
+        return { success: true, message: 'favori et compétence supprimés avec succès.' };
     } catch (error) {
         return { success: false, message: error.message };
     }
@@ -68,7 +68,7 @@ async function suppProfil(userID, competenceID) {
 
 
 module.exports = {
-    ajouterProfil,
-    suppProfil,
+    ajouterFavori,
+    suppFavori,
     getFavorisUtilisateur
 };
