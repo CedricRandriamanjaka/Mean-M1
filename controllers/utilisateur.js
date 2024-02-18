@@ -83,10 +83,21 @@ async function getUtilisateur(id) {
     }
 }
 
+async function getUtilisateurByRole(role) {
+    try {
+        // Récupérer l'utilisateur par son role
+        const utilisateur = await Utilisateur.find({role: role}).exec();
+        return utilisateur;
+    } catch (error) {
+        throw new Error('Impossible d\'obtenir l\'utilisateur : ' + error.message);
+    }
+}
+
 module.exports = {
     ajouterUtilisateur,
     modifierUtilisateur,
     supprimerUtilisateur,
     listeUtilisateurs,
-    getUtilisateur
+    getUtilisateur,
+    getUtilisateurByRole
 };

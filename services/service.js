@@ -51,7 +51,7 @@ class ServiceService {
     }
   }
 
-  async getServiceById(id) {
+  async getServiceById(id) { 
     try {
       const service = await Service.findById(id);
       if (!service) {

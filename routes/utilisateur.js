@@ -50,11 +50,25 @@ router.get('/all', async (req, res) => {
 });
 
 // Route pour obtenir un utilisateur par son ID
-router.get('/:id', async (req, res) => {
+router.get('/byId/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
         const utilisateur = await controllerUtilisateur.getUtilisateur(id);
+        res.status(200).json(utilisateur);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+});
+
+// Route pour obtenir un utilisateur par son role
+router.get('/byRole/:role', async (req, res) => {
+    const { role } = req.params;
+    const roleNumber = parseInt(role, 10);
+    // console.log(roleNumber);
+
+    try {
+        const utilisateur = await controllerUtilisateur.getUtilisateurByRole(roleNumber);
         res.status(200).json(utilisateur);
     } catch (error) {
         res.status(400).json({ message: error.message });
