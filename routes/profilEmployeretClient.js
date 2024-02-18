@@ -8,8 +8,9 @@ router.post('/competences/ajout/:idUser', async (req, res) => {
     try {
         const { idUser } = req.params;
         const { competenceID } = req.body;
-        ProfilEmployerEtClient.ajouterProfil(idUser,competenceID);
-        res.status(201).json({ message: 'Compétence ajoutée avec succès à l\'utilisateur.' });
+        const prof = await ProfilEmployerEtClient.ajouterProfil(idUser,competenceID);
+        // return prof;
+        res.status(201).json(prof);
     } catch (error) {
         console.error("Erreur lors de l'ajout de la compétence à l'utilisateur:", error);
         res.status(500).json({ error: 'Erreur lors de l\'ajout de la compétence à l\'utilisateur.' });
