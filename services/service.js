@@ -10,6 +10,7 @@ class ServiceService {
       commission,
       dateDebut,
       dateFin,
+      competences
     } = data;
 
     if (
@@ -17,9 +18,7 @@ class ServiceService {
       !description ||
       !prix ||
       !duree ||
-      !commission ||
-      !dateDebut ||
-      !dateFin
+      !commission
     ) {
       throw new Error('Veuillez remplir tous les champs.');
     }
@@ -33,9 +32,11 @@ class ServiceService {
         commission,
         dateDebut,
         dateFin,
+        competences,
       });
       await service.save();
-      return { success: true, message: 'Service created.' };
+
+      return { success: true, message: 'Service created.'};
     } catch (error) {
       throw new Error(error.message);
     }
@@ -50,7 +51,7 @@ class ServiceService {
     }
   }
 
-  async getServiceById(id) {
+  async getServiceById(id) { 
     try {
       const service = await Service.findById(id);
       if (!service) {
