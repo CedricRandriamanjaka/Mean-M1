@@ -8,6 +8,8 @@ const bodyParser = require('body-parser');
 const RouterUtilisateur = require('./routes/utilisateur');
 const RouterHoraire = require('./routes/horaireEmploye');
 const RouterProfil = require('./routes/profilEmployeretClient');
+const RouteFavori = require("./routes/favori");
+
 
 var apiCompetences = require("./routes/competence");
 var apiServices = require("./routes/service");
@@ -34,6 +36,7 @@ app.use(cors());
 app.use('/api/utilisateur/', RouterUtilisateur)
 app.use('/api/horaire/', RouterHoraire)
 app.use('/api/profilEmployeretClient/', RouterProfil)
+app.use('/api/favori/', RouteFavori)
 
 app.get('/', (req, res) => {
     res.send("hello word")
