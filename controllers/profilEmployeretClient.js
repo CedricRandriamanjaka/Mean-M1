@@ -1,5 +1,5 @@
 const ProfilEmployerEtClient = require('../models/profilEmployerEtClient');
-const Utilisateur = require('../models/Utilisateur');
+const Utilisateur = require('../models/utilisateur');
 const service = require('../services/service');
 
 async function ajouterProfil(userID, competenceID) {
