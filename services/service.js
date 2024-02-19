@@ -1,4 +1,5 @@
 const Service = require('../models/service');
+const Competence = require('../models/competence');
 
 class ServiceService {
   async createService(data) {
@@ -87,6 +88,23 @@ class ServiceService {
       }
       return { message: 'Service deleted successfully' };
     } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  async getAllCompetencesInService(serviceId) {
+    const competences = [];
+    try {
+      let competenceServices = await ProfilService.find({serviceID  : serviceId});
+      const competenceID = competenceServices.map(competenceService => competenceService.competenceID);
+      for (let i = 0; i < competenceID.length; i++) {
+          const competence = await Competence.findById(competenceID[i]);
+          if (competence) {
+            competences.push(competence);
+          }
+      }
+      return competences;
+    }catch (error) {
       throw new Error(error.message);
     }
   }

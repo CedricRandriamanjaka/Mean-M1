@@ -7,7 +7,7 @@ const profilEmployerEtClient = mongoose.Schema({
     },
     competenceID: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Utilisateur' // Référence au modèle Utilisateur
+        ref: 'Competence' // Référence au modèle Competence
     }
 })
 
