@@ -174,7 +174,7 @@ async function getIndispoDate(utilisateurID, serviceID) {
         const rendezVousIndispo = await getIndispoDatesRendezVous(utilisateur, currentDate, maxDate, service);
 
         // Récupérer les indisponibilités horaires de l'utilisateur dans la plage de dates spécifiée
-        const horairesIndispo = await getDispoDateHoraire(utilisateur, currentDate, maxDate);
+        const horairesIndispo = await getIndispoDateHoraire(utilisateur, currentDate, maxDate);
 
         // Combinaison des indisponibilités trouvées
         const indisponibilites = combineIndispoDates(rendezVousIndispo, horairesIndispo);
@@ -204,7 +204,7 @@ async function getIndispoDatesRendezVous(utilisateur, debut, fin, service) {
             const finRdv = moment(rendezVous.date).add(service.duree, 'minutes');
             return { debut: debutRdv, fin: finRdv };
         });
-
+        indispoDates.sort((a, b) => a.debut - b.debut);
         return indispoDates;
     } catch (error) {
         console.error('Erreur lors de la récupération des indisponibilités liées aux rendez-vous:', error.message);
@@ -246,11 +246,45 @@ async function getDispoDateHoraire(utilisateur, debut, fin) {
             dispoIntervals.push({ debut: debutInterval, fin: finInterval });
         }
     }
-
+    dispoIntervals.sort((a, b) => a.debut - b.debut);
     return dispoIntervals;
 }
 
 
+
+async function getIndispoDateHoraire(utilisateur, debut, fin) {
+    // Appeler la fonction getDispoDateHoraire pour obtenir les disponibilités de l'utilisateur
+    const dispoIntervals = await getDispoDateHoraire(utilisateur, debut, fin);
+
+    if (dispoIntervals.length === 0) {
+        // Si aucune liste n'est donnée, retourner l'intervalle complet de début à fin
+        return [{ debut: new Date(debut), fin: new Date(fin) }];
+    }
+
+    // Trier les intervalles de disponibilité par ordre croissant de début
+    dispoIntervals.sort((a, b) => a.debut - b.debut);
+
+    const indispoIntervals = [];
+    let startIndispo = new Date(debut);
+
+    // Parcourir les intervalles de disponibilité
+    for (const interval of dispoIntervals) {
+        // Si l'intervalle de disponibilité commence après le début de la période
+        if (interval.debut > startIndispo) {
+            // Ajouter l'intervalle entre startIndispo et le début de l'intervalle de disponibilité actuel
+            indispoIntervals.push({ debut: startIndispo, fin: interval.debut });
+        }
+        // Mettre à jour startIndispo pour le prochain intervalle
+        startIndispo = interval.fin;
+    }
+
+    // Ajouter l'intervalle entre la fin du dernier intervalle de disponibilité et la fin de la période
+    if (startIndispo < fin) {
+        indispoIntervals.push({ debut: startIndispo, fin: new Date(fin) });
+    }
+
+    return indispoIntervals;
+}
 
 
 
