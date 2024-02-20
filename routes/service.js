@@ -58,4 +58,15 @@ router.post('/', async (req, res) => {
     }
   });
 
+  router.get('/getEmployesByCompetence/:id', async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      const employes = await serviceService.getEmployesByCompetence(id);
+      res.status(200).json(employes);
+    } catch (error) {
+      res.status(404).json({ message: error.message });
+    }
+  });
+
   module.exports = router;

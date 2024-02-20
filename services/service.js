@@ -1,4 +1,6 @@
+const profilEmployerEtClient = require('../models/profilEmployerEtClient');
 const Service = require('../models/service');
+const utilisateur = require('../models/utilisateur');
 
 class ServiceService {
   async createService(data) {
@@ -90,6 +92,29 @@ class ServiceService {
       throw new Error(error.message);
     }
   }
+
+  async getEmployesByCompetence(serviceId) {
+    try {
+        // Récupérer les compétences du service spécifié
+        const service = await Service.findById(serviceId).populate('competences');
+        if (!service) {
+            throw new Error('Service non trouvé');
+        }
+        const serviceCompetences = service.competences.map(comp => comp._id);
+
+        // Récupérer les utilisateurs ayant au moins toutes les compétences requises
+        const employes = await utilisateur.find({
+            role: 2, // Rôle d'employé
+            competences: { $all: serviceCompetences } // Au moins toutes les compétences requises
+        });
+
+        return employes;
+    } catch (error) {
+        console.error('Erreur lors de la recherche des employés:', error.message);
+        return [];
+    }
+}
+
 }
 
 module.exports = ServiceService;

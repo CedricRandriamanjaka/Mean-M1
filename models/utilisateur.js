@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 const utilisateur = mongoose.Schema({
     nom: {
@@ -32,7 +33,8 @@ const utilisateur = mongoose.Schema({
     },
     etat: {
         type: String
-    }
+    },
+    competences : [{type : Schema.Types.ObjectId , ref : 'Competence'}]
 })
 
 module.exports = mongoose.model('Utilisateur', utilisateur);
