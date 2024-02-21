@@ -170,19 +170,19 @@ async function getIndispoDate(utilisateurID, serviceID) {
         const maxDate = moment().add(2, 'weeks').endOf('day');
 
         
-        // Récupérer les rendez-vous de l'utilisateur dans la plage de dates spécifiée
+        // Récupérer les rendez-vous de l'utilisateur dans la plage de dates spécifiée #
         const rendezVousIndispo = await getIndispoDatesRendezVous(utilisateur, currentDate, maxDate, service);
 
-        // Récupérer les indisponibilités horaires de l'utilisateur dans la plage de dates spécifiée
+        // Récupérer les indisponibilités horaires de l'utilisateur dans la plage de dates spécifiée VALIDE
         const horairesIndispo = await getIndispoDateHoraire(utilisateur, currentDate, maxDate);
 
-        // Combinaison des indisponibilités trouvées
+        // Combinaison des indisponibilités trouvées VALIDE
         const indisponibilites = combineIndispoDates(rendezVousIndispo, horairesIndispo);
 
-        // Filtrer les indisponibilités en fonction de la durée du service
-        // const indispoFiltered = filterIndispoByService(indisponibilites, service);
+        // Filtrer les indisponibilités en fonction de la durée du service #
+        const indispoFiltered = filterIndispoByService(indisponibilites, service);
 
-        return horairesIndispo;
+        return indispoFiltered;
     } catch (error) {
         console.error('Erreur lors de la récupération des indisponibilités:', error.message);
         return [];
