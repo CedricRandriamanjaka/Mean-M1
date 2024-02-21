@@ -44,7 +44,7 @@ class ServiceService {
 
   async getServices() {
     try {
-      const services = await Service.find();
+      const services = await Service.find().populate('competences');
       return services;
     } catch (error) {
       throw new Error(error.message);
