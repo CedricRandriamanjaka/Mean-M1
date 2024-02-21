@@ -3,6 +3,7 @@ const RendezVous = require('../models/rendezVous');
 const Service = require('../models/service');
 const HoraireEmploye = require('../models/horaireEmploye');
 const moment = require('moment');
+const service = require('../models/service');
 
 
 async function inscription(nom, prenom, dateNaissance, genre, email, motdepasse) {
@@ -177,12 +178,9 @@ async function getIndispoDate(utilisateurID, serviceID) {
         const horairesIndispo = await getIndispoDateHoraire(utilisateur, currentDate, maxDate);
 
         // Combinaison des indisponibilités trouvées VALIDE
-        const indisponibilites = combineIndispoDates(rendezVousIndispo, horairesIndispo);
+        const indisponibilites = combineIndispoDates(rendezVousIndispo, horairesIndispo,service.duree);
 
-        // Filtrer les indisponibilités en fonction de la durée du service #
-        const indispoFiltered = filterIndispoByService(indisponibilites, service);
-
-        return indispoFiltered;
+        return indisponibilites;
     } catch (error) {
         console.error('Erreur lors de la récupération des indisponibilités:', error.message);
         return [];
@@ -213,9 +211,6 @@ async function getIndispoDatesRendezVous(utilisateur, debut, fin, service) {
 }
 
 async function getDispoDateHoraire(utilisateur, debut, fin) {
-    console.log(debut);
-    console.log(fin);
-
     const dispoIntervals = [];
     const horaires = await HoraireEmploye.find({ utilisateurID: utilisateur._id });
 
@@ -290,7 +285,7 @@ async function getIndispoDateHoraire(utilisateur, debut, fin) {
 
 
 
-function combineIndispoDates(indispo1, indispo2) {
+function combineIndispoDates(indispo1, indispo2, dureeService) {
     const combinedIndispo = [];
     const allIndispo = [...indispo1, ...indispo2];
     allIndispo.sort((a, b) => a.debut - b.debut); // Tri par ordre croissant des débuts
@@ -298,9 +293,11 @@ function combineIndispoDates(indispo1, indispo2) {
     let currentIndispo = allIndispo[0];
     for (let i = 1; i < allIndispo.length; i++) {
         const nextIndispo = allIndispo[i];
-        if (currentIndispo.fin >= nextIndispo.debut) {
+        // Calculer la fin de l'indisponibilité actuelle + durée du service en millisecondes
+        const currentIndispoFinPlusDuree = new Date(currentIndispo.fin.getTime() + (dureeService * 60000));
+        if (currentIndispoFinPlusDuree >= nextIndispo.debut) {
             // Les intervalles se chevauchent, fusionner
-            currentIndispo.fin = Math.max(currentIndispo.fin, nextIndispo.fin);
+            currentIndispo.fin = new Date(Math.max(currentIndispo.fin.getTime(), nextIndispo.fin.getTime()));
         } else {
             // Pas de chevauchement, ajouter l'intervalle actuel et passer au suivant
             combinedIndispo.push(currentIndispo);
@@ -314,14 +311,8 @@ function combineIndispoDates(indispo1, indispo2) {
     return combinedIndispo;
 }
 
-function filterIndispoByService(indisponibilites, service) {
-    // Filtrer les indisponibilités en fonction de la durée du service
-    const dureeService = service.duree;
-    return indisponibilites.filter(indispo => {
-        const dureeIndispo = moment.duration(indispo.fin.diff(indispo.debut)).asMinutes();
-        return dureeIndispo >= dureeService;
-    });
-}
+
+
 
 module.exports = {
     ajouterUtilisateur,
