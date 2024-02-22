@@ -154,7 +154,7 @@ async function getUtilisateur(id) {
 async function getUtilisateurByRole(role) {
     try {
         // Récupérer l'utilisateur par son role
-        const utilisateur = await Utilisateur.find({role: role}).exec();
+        const utilisateur = await Utilisateur.find({ role: role }).exec();
         return utilisateur;
     } catch (error) {
         throw new Error('Impossible d\'obtenir l\'utilisateur : ' + error.message);
@@ -167,20 +167,23 @@ async function getIndispoDate(utilisateurID, serviceID) {
     try {
         const utilisateur = await Utilisateur.findById(utilisateurID);
         const service = await Service.findById(serviceID);
+        // const currentDate = moment();
         const currentDate = moment().startOf('day');
         const maxDate = moment().add(2, 'weeks').endOf('day');
 
-        
+
         // Récupérer les rendez-vous de l'utilisateur dans la plage de dates spécifiée #
-        const rendezVousIndispo = await getIndispoDatesRendezVous(utilisateur, currentDate, maxDate, service);
+        const rendezVousIndispo = await getIndispoDatesRendezVous(utilisateurID, currentDate, maxDate, service);
 
         // Récupérer les indisponibilités horaires de l'utilisateur dans la plage de dates spécifiée VALIDE
         const horairesIndispo = await getIndispoDateHoraire(utilisateur, currentDate, maxDate);
 
         // Combinaison des indisponibilités trouvées VALIDE
-        const indisponibilites = combineIndispoDates(rendezVousIndispo, horairesIndispo,service.duree);
+        const indisponibilites = combineIndispoDates(rendezVousIndispo, horairesIndispo, service.duree);
+        const currentInterval = [{ debut: new Date(currentDate), fin: new Date(moment()) }];
+        const indisponibilites2 = combineIndispoDates(indisponibilites, currentInterval, service.duree);
 
-        return indisponibilites;
+        return indisponibilites2;
     } catch (error) {
         console.error('Erreur lors de la récupération des indisponibilités:', error.message);
         return [];
@@ -191,22 +194,24 @@ async function getIndispoDatesRendezVous(utilisateur, debut, fin, service) {
     try {
         // Récupérer les rendez-vous de l'utilisateur dans la plage de dates spécifiée pour le service
         const rendezVous = await RendezVous.find({
-            utilisateurID: utilisateur._id,
-            serviceId: service._id,
+            employeID: utilisateur,
+            serviceId:service._id,
             date: { $gte: debut, $lte: fin }
         });
 
+
         // Calculer les intervalles de rendez-vous et les ajouter à une liste d'indisponibilités
         const indispoDates = rendezVous.map(rendezVous => {
-            const debutRdv = moment(rendezVous.date);
-            const finRdv = moment(rendezVous.date).add(service.duree, 'minutes');
+            const debutRdv = moment(rendezVous.date).toDate();
+            const finRdv = moment(rendezVous.date).add(service.duree, 'minutes').toDate();
+
             return { debut: debutRdv, fin: finRdv };
         });
         indispoDates.sort((a, b) => a.debut - b.debut);
         return indispoDates;
     } catch (error) {
-        console.error('Erreur lors de la récupération des indisponibilités liées aux rendez-vous:', error.message);
-        return [];
+        console.error('Erreur lors de la récupération des indisponibilités liées aux rendez-vous:', error);
+        throw error; // Renvoyer l'erreur pour une gestion plus précise
     }
 }
 
@@ -229,9 +234,9 @@ async function getDispoDateHoraire(utilisateur, debut, fin) {
         if (horaireJour) {
             const debutInterval = new Date(currentDate);
             const finInterval = new Date(currentDate);
-            const debutHeure = parseInt(horaireJour.heureDebut.split(':')[0])+3;
+            const debutHeure = parseInt(horaireJour.heureDebut.split(':')[0]) + 3;
             const debutMinute = parseInt(horaireJour.heureDebut.split(':')[1]);
-            const finHeure = parseInt(horaireJour.heureFin.split(':')[0])+3;
+            const finHeure = parseInt(horaireJour.heureFin.split(':')[0]) + 3;
             const finMinute = parseInt(horaireJour.heureFin.split(':')[1]);
 
             // Ajustement des heures et des minutes
