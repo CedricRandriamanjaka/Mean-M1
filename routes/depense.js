@@ -50,11 +50,12 @@ router.get("/types/:id", async (req, res) => {
   }
 });
 
-router.get("/mois=:mois/jour=:jour", async (req, res) => {
+router.get("/annee=:annee/mois=:mois/jour=:jour", async (req, res) => {
   const mois = parseInt(req.params.mois, 10);
   const jour = parseInt(req.params.jour, 10);
+  const annee = parseInt(req.params.annee, 10);
   try {
-    const depense = await depenseService.getDepense(mois, jour);
+    const depense = await depenseService.getDepense(annee, mois, jour);
     res.status(200).json(depense);
   } catch (error) {
     res.status(404).json({ message: error.message });

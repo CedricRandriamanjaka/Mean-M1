@@ -22,8 +22,10 @@ class DepenseService {
     }
   }
 
-  async getDepense(mois, jour) {
+  async getDepense(annee, mois, jour) {
     console.log(mois);
+    console.log(annee);
+    console.log(jour);
     try {
       const filterExpr = {};
       filterExpr.$and = [];
@@ -36,12 +38,16 @@ class DepenseService {
         filterExpr.$and.push({ $eq: [{ $dayOfMonth: "$date" }, jour] });
       }
 
+      if (annee !== 0) {
+        filterExpr.$and.push({ $eq: [{ $year: "$date" }, annee] });
+      }
+
       const depenses = await Depense.find({
         $expr: filterExpr,
       }).populate("depenseTypeID");
-      for (let i = 0; i < depenses.length; i++) {
-        console.log("date: " + depenses[i].date.toISOString().split("T")[0]);
-      }
+      // for (let i = 0; i < depenses.length; i++) {
+      //   console.log("date: " + depenses[i].date.toISOString().split("T")[0]);
+      // }
 
       // Formatter la date dans chaque objet du tableau
       const depensesFormatees = depenses.map((depense) => ({
@@ -52,7 +58,7 @@ class DepenseService {
         montant: depense.montant,
       }));
 
-      console.log(depensesFormatees);
+      // console.log(depensesFormatees);
 
       return depensesFormatees;
     } catch (error) {
