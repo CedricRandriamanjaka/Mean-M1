@@ -4,14 +4,23 @@ const controllerUtilisateur = require('../controllers/utilisateur');
 const middlewareUtilisateur = require('../middleware/utilisateur');
 const jwt = require('jsonwebtoken');
 
+const multer = require('multer');
 
+const storage = multer.diskStorage({
+  destination: './public/Images/Employe',
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+
+const upload = multer({ storage });
 
 // Route pour ajouter un nouvel utilisateur
-router.post('/nouveauUtilisateur', async (req, res) => {
+router.post('/nouveauUtilisateur', upload.single('image'), async (req, res) => {
     const { nom, prenom, dateNaissance, genre, email, motdepasse, role, etat } = req.body;
 
     try {
-        const nouvelUtilisateur = await controllerUtilisateur.ajouterUtilisateur(nom, prenom, dateNaissance, genre, email, motdepasse, role, etat);
+        const nouvelUtilisateur = await controllerUtilisateur.ajouterUtilisateur(nom, prenom, dateNaissance, genre, email, motdepasse, role, etat, req.file);
         res.status(201).json(nouvelUtilisateur);
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -19,12 +28,13 @@ router.post('/nouveauUtilisateur', async (req, res) => {
 });
 
 // Route pour modifier un utilisateur
-router.put('/modifierUtilisateur/:id', async (req, res) => {
+router.put('/modifierUtilisateur/:id', upload.single('image'), async (req, res) => {
     const { id } = req.params;
     const { nom, prenom, dateNaissance, genre, email, motdepasse, role, etat } = req.body;
-
+    console.log(req.body);
+    console.log(req.file);
     try {
-        const utilisateurModifie = await controllerUtilisateur.modifierUtilisateur(id, nom, prenom, dateNaissance, genre, email, motdepasse, role, etat);
+        const utilisateurModifie = await controllerUtilisateur.modifierUtilisateur(id, nom, prenom, dateNaissance, genre, email, motdepasse, role, etat, req.file);
         res.status(200).json(utilisateurModifie);
     } catch (error) {
         res.status(400).json({ message: error.message });

@@ -12,6 +12,7 @@ const secretKey = 'tok';
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.static('public'))
 
 // Importez et utilisez vos routes ici
 const routes = require('./app');
