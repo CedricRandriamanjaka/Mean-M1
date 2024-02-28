@@ -60,7 +60,7 @@ async function getUser(email) {
     return utilisateurExistant;
 }
 
-async function ajouterUtilisateur(nom, prenom, dateNaissance, genre, email, motdepasse, role, etat) {
+async function ajouterUtilisateur(nom, prenom, dateNaissance, genre, email, motdepasse, role, etat, file) {
     try {
         // Vérifier si l'e-mail est déjà présent dans la base de données
         const utilisateurExistant = await Utilisateur.findOne({ email });
@@ -78,7 +78,8 @@ async function ajouterUtilisateur(nom, prenom, dateNaissance, genre, email, motd
             email,
             motdepasse,
             role,
-            etat
+            etat,
+            image: file ? file.filename : null,
         });
 
         // Sauvegarder le nouvel utilisateur dans la base de données
@@ -92,7 +93,7 @@ async function ajouterUtilisateur(nom, prenom, dateNaissance, genre, email, motd
 }
 
 
-async function modifierUtilisateur(id, nouveauNom, nouveauPrenom, nouvelleDateNaissance, nouveauGenre, nouveauEmail, nouveauMotdepasse, nouveauRole, nouvelEtat) {
+async function modifierUtilisateur(id, nouveauNom, nouveauPrenom, nouvelleDateNaissance, nouveauGenre, nouveauEmail, nouveauMotdepasse, nouveauRole, nouvelEtat, nouveauFile) {
     try {
         // Rechercher l'utilisateur par son ID
         const utilisateur = await Utilisateur.findById(id);
@@ -111,6 +112,8 @@ async function modifierUtilisateur(id, nouveauNom, nouveauPrenom, nouvelleDateNa
         utilisateur.motdepasse = nouveauMotdepasse;
         utilisateur.role = nouveauRole;
         utilisateur.etat = nouvelEtat;
+        utilisateur.image = nouveauFile.filename;
+
 
         // Sauvegarder les modifications dans la base de données
         const utilisateurModifie = await utilisateur.save();

@@ -9,6 +9,7 @@ var ServiceSchema = new Schema({
     commission : {  type: Number, required: true },
     dateDebut : Date,
     dateFin : Date,
+    image: String,
     competences : [{type : Schema.Types.ObjectId , ref : 'Competence'}],
 });
 
