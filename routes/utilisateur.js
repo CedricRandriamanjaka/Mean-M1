@@ -4,16 +4,16 @@ const controllerUtilisateur = require('../controllers/utilisateur');
 const middlewareUtilisateur = require('../middleware/utilisateur');
 const jwt = require('jsonwebtoken');
 
-const multer = require('multer');
+// const multer = require('multer');
 
-const storage = multer.diskStorage({
-  destination: './public/Images/Employe',
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
-});
+// const storage = multer.diskStorage({
+//   destination: './public/Images/Employe',
+//   filename: (req, file, cb) => {
+//     cb(null, Date.now() + '-' + file.originalname);
+//   }
+// });
 
-const upload = multer({ storage });
+// const upload = multer({ storage });
 
 // Route pour ajouter un nouvel utilisateur
 router.post('/nouveauUtilisateur', upload.single('image'), async (req, res) => {

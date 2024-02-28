@@ -4,16 +4,16 @@ const router = express.Router();
 const ServiceService = require('../services/service');
 const serviceService = new ServiceService();
 
-const multer = require('multer');
+// const multer = require('multer');
 
-const storage = multer.diskStorage({
-  destination: './public/Images/Service',
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
-});
+// const storage = multer.diskStorage({
+//   destination: './public/Images/Service',
+//   filename: (req, file, cb) => {
+//     cb(null, Date.now() + '-' + file.originalname);
+//   }
+// });
 
-const upload = multer({ storage });
+// const upload = multer({ storage });
 
 router.post('/', upload.single('image'), async (req, res) => {
     const data = req.body;
