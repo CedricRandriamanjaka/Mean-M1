@@ -35,8 +35,6 @@ mongoose.connect(mongoURI).then(() => {
     console.log(error)
 });
 
-app.use(cors());
-
 // app.use('/api/produit/', RouterProduit)
 app.use('/api/utilisateur/', RouterUtilisateur)
 app.use('/api/horaire/', RouterHoraire)
