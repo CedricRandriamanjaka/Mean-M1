@@ -2,7 +2,6 @@ var express = require("express");
 const router = express.Router();
 // const nodemailer = require("nodemailer");
 // const Mailgen = require("mailgen");
-const { email, password } = require("../env.js");
 
 const CompetenceService = require("../services/competence");
 const competenceService = new CompetenceService();
