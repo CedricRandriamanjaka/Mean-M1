@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const controllerUtilisateur = require('../controllers/utilisateur');
-const middlewareUtilisateur = require('../middleware/utilisateur');
-const jwt = require('jsonwebtoken');
 
 
 
@@ -105,12 +103,6 @@ router.post('/connection', async (req, res) => {
     const resultatConnexion = await controllerUtilisateur.connection(email, motdepasse);
 
     if (resultatConnexion.email) {
-        // Créer un token JWT avec les informations de l'utilisateur
-        const token = jwt.sign(resultatConnexion.toJSON(), 'tok', { expiresIn: '1h' });
-
-        // Enregistrer le token dans un cookie
-        res.cookie('token', token, { maxAge: 3600000, httpOnly: true }); // MaxAge en millisecondes (1h dans cet exemple)
-
         res.json(resultatConnexion); // Envoyer le token JWT sous forme d'objet JSON
     } else {
         res.status(400).send(resultatConnexion.messageErreur);
@@ -118,32 +110,15 @@ router.post('/connection', async (req, res) => {
     }
 });
 
-router.get('/getUserSession', async (req, res) => {
-    const token = req.cookies.token;
-
-    if (token) {
-        try {
-            // Vérifier et décoder le token JWT
-            const decoded = jwt.verify(token, 'tok');
-
-            // Utilise les informations du token (decoded) ici pour obtenir les informations de session de l'utilisateur
-            res.status(200).json(decoded);
-        } catch (err) {
-            // Gérer les erreurs de vérification du token (par exemple, token expiré ou invalide)
-            res.status(400).send('Token invalide ou expiré');
-        }
-    } else {
-        res.status(400).send('Non connecté');
+router.get('/getIndispoDate/:iduser/:idservice', async (req, res) => {
+    const { iduser } = req.params;
+    const { idservice } = req.params;
+    try {
+        const dates = await controllerUtilisateur.getIndispoDate(iduser,idservice);
+        res.status(200).json(dates);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
     }
-});
-
-// route pour déconnexion
-router.get('/deconnection', async (req, res) => {
-    // Effacer le cookie contenant le token
-    res.clearCookie('token');
-
-    // Envoyer une réponse indiquant que la déconnexion a été effectuée avec succès
-    res.status(200).send('Déconnexion réussie');
 });
 
 module.exports = router;

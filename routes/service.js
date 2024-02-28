@@ -23,6 +23,35 @@ router.post('/', async (req, res) => {
       res.status(500).json({ message: error.message });
     }
   });
+
+  router.get('/nonSpecial', async (req, res) => {
+    try {
+      const services = await serviceService.getServicesNonSpecial();
+      res.status(200).json(services);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  router.get('/serviceSpecial/', async (req, res) => {
+    try {
+      const services = await serviceService.getServiceSpecial();
+      res.status(200).json(services);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  router.get('/serviceCompetence/:idUser', async (req, res) => {
+    const { idUser } = req.params;
+
+    try {
+      const services = await serviceService.getServiceComp(idUser);
+      res.status(200).json(services);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
   
   router.get('/:id', async (req, res) => {
     const { id } = req.params;
@@ -53,6 +82,17 @@ router.post('/', async (req, res) => {
     try {
       const result = await serviceService.deleteService(id);
       res.status(200).json(result);
+    } catch (error) {
+      res.status(404).json({ message: error.message });
+    }
+  });
+
+  router.get('/getEmployesByCompetence/:id', async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      const employes = await serviceService.getEmployesByCompetence(id);
+      res.status(200).json(employes);
     } catch (error) {
       res.status(404).json({ message: error.message });
     }

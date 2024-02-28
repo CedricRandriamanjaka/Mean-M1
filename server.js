@@ -1,8 +1,6 @@
 const http = require('http');
 const express = require('express');
 const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const jwt = require('jsonwebtoken');
 const app = express();
 
 // Clé secrète pour signer les tokens JWT
@@ -11,7 +9,6 @@ const secretKey = 'tok';
 // Middleware CORS
 app.use(cors());
 app.use(express.json());
-app.use(cookieParser());
 
 // Importez et utilisez vos routes ici
 const routes = require('./app');
