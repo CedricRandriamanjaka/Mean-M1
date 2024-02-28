@@ -2,42 +2,42 @@ const express = require('express');
 const router = express.Router();
 const controllerUtilisateur = require('../controllers/utilisateur');
 
-const multer = require('multer');
+// const multer = require('multer');
 
-const storage = multer.diskStorage({
-  destination: './public/Images/Employe',
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
-});
+// const storage = multer.diskStorage({
+//   destination: './public/Images/Employe',
+//   filename: (req, file, cb) => {
+//     cb(null, Date.now() + '-' + file.originalname);
+//   }
+// });
 
-const upload = multer({ storage });
+// const upload = multer({ storage });
 
 // Route pour ajouter un nouvel utilisateur
-router.post('/nouveauUtilisateur', upload.single('image'), async (req, res) => {
-    const { nom, prenom, dateNaissance, genre, email, motdepasse, role, etat } = req.body;
+// router.post('/nouveauUtilisateur', upload.single('image'), async (req, res) => {
+//     const { nom, prenom, dateNaissance, genre, email, motdepasse, role, etat } = req.body;
 
-    try {
-        const nouvelUtilisateur = await controllerUtilisateur.ajouterUtilisateur(nom, prenom, dateNaissance, genre, email, motdepasse, role, etat, req.file);
-        res.status(201).json(nouvelUtilisateur);
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
-});
+//     try {
+//         const nouvelUtilisateur = await controllerUtilisateur.ajouterUtilisateur(nom, prenom, dateNaissance, genre, email, motdepasse, role, etat, req.file);
+//         res.status(201).json(nouvelUtilisateur);
+//     } catch (error) {
+//         res.status(400).json({ message: error.message });
+//     }
+// });
 
 // Route pour modifier un utilisateur
-router.put('/modifierUtilisateur/:id', upload.single('image'), async (req, res) => {
-    const { id } = req.params;
-    const { nom, prenom, dateNaissance, genre, email, motdepasse, role, etat } = req.body;
-    console.log(req.body);
-    console.log(req.file);
-    try {
-        const utilisateurModifie = await controllerUtilisateur.modifierUtilisateur(id, nom, prenom, dateNaissance, genre, email, motdepasse, role, etat, req.file);
-        res.status(200).json(utilisateurModifie);
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
-});
+// router.put('/modifierUtilisateur/:id', upload.single('image'), async (req, res) => {
+//     const { id } = req.params;
+//     const { nom, prenom, dateNaissance, genre, email, motdepasse, role, etat } = req.body;
+//     console.log(req.body);
+//     console.log(req.file);
+//     try {
+//         const utilisateurModifie = await controllerUtilisateur.modifierUtilisateur(id, nom, prenom, dateNaissance, genre, email, motdepasse, role, etat, req.file);
+//         res.status(200).json(utilisateurModifie);
+//     } catch (error) {
+//         res.status(400).json({ message: error.message });
+//     }
+// });
 
 // Route pour supprimer un utilisateur
 router.delete('/supprimerUtilisateur/:id', async (req, res) => {
