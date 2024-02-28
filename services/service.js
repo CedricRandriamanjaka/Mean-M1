@@ -1,7 +1,7 @@
 const Service = require('../models/service');
 
 class ServiceService {
-  async createService(data) {
+  async createService(data, file) {
     const {
       nomService,
       description,
@@ -32,7 +32,8 @@ class ServiceService {
         commission,
         dateDebut,
         dateFin,
-        competences,
+        image: file ? file.filename : null,
+        competences: JSON.parse(competences),
       });
       await service.save();
 
@@ -45,6 +46,7 @@ class ServiceService {
   async getServices() {
     try {
       const services = await Service.find().populate('competences');
+
       return services;
     } catch (error) {
       throw new Error(error.message);
@@ -63,11 +65,42 @@ class ServiceService {
     }
   }
 
-  async updateService(id, updatedData) {
+  async updateService(id, updatedData, updatedImage) {
+    const {
+      nomService,
+      description,
+      prix,
+      duree,
+      commission,
+      dateDebut,
+      dateFin,
+      competences
+    } = updatedData;
     try {
+
+      if (
+        !nomService ||
+        !description ||
+        !prix ||
+        !duree ||
+        !commission
+      ) {
+        throw new Error('Veuillez remplir tous les champs.');
+      }
+
       const updatedService = await Service.findByIdAndUpdate(
         id,
-        updatedData,
+        {
+          nom: nomService,
+          description,
+          prix,
+          duree,
+          commission,
+          dateDebut,
+          dateFin,
+          competences: JSON.parse(competences),
+          image: updatedImage.filename
+        },
         { new: true }
       );
       if (!updatedService) {
