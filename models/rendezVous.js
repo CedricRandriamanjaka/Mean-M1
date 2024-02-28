@@ -6,6 +6,10 @@ var rendezVous = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Utilisateur' 
     },
+    employeID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Utilisateur' 
+    },
     serviceId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Service' 

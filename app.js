@@ -9,6 +9,7 @@ const RouterUtilisateur = require('./routes/utilisateur');
 const RouterHoraire = require('./routes/horaireEmploye');
 const RouterProfil = require('./routes/profilEmployeretClient');
 const RouteFavori = require("./routes/favori");
+const RouteRDV = require("./routes/rendezVous");
 
 
 var apiCompetences = require("./routes/competence");
@@ -21,10 +22,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
 
-app.use("/api/services", apiServices)
-app.use("/api/competences", apiCompetences) 
-app.use("/api/profilService", apiProfilServices)
-app.use("/api/depenses", apiDepenses)
+app.use("/api/services", apiServices);
+app.use("/api/competences", apiCompetences);
+app.use("/api/profilService", apiProfilServices);
+app.use("/api/depenses", apiDepenses);
 
 var mongoURI = "mongodb+srv://Cedric:Cedric@meanproject.vuk6uvm.mongodb.net/?retryWrites=true&w=majority";
 
@@ -37,10 +38,11 @@ mongoose.connect(mongoURI).then(() => {
 app.use(cors());
 
 // app.use('/api/produit/', RouterProduit)
-app.use('/api/utilisateur/', RouterUtilisateur)
-app.use('/api/horaire/', RouterHoraire)
-app.use('/api/profilEmployeretClient/', RouterProfil)
-app.use('/api/favori/', RouteFavori)
+app.use('/api/utilisateur/', RouterUtilisateur);
+app.use('/api/horaire/', RouterHoraire);
+app.use('/api/profilEmployeretClient/', RouterProfil);
+app.use('/api/favori/', RouteFavori);
+app.use("/api/rendezVous", RouteRDV);
 
 app.get('/', (req, res) => {
     res.send("hello word")
