@@ -32,6 +32,10 @@ const utilisateur = mongoose.Schema({
     },
     etat: {
         type: String
+    },
+    image: {
+        type: String,
+        required: false
     }
 })
 
