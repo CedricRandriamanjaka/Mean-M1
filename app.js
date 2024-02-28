@@ -9,6 +9,7 @@ const RouterUtilisateur = require('./routes/utilisateur');
 const RouterHoraire = require('./routes/horaireEmploye');
 const RouterProfil = require('./routes/profilEmployeretClient');
 const RouteFavori = require("./routes/favori");
+const RouteRDV = require("./routes/rendezVous");
 
 
 var apiCompetences = require("./routes/competence");
@@ -41,6 +42,7 @@ app.use('/api/utilisateur/', RouterUtilisateur)
 app.use('/api/horaire/', RouterHoraire)
 app.use('/api/profilEmployeretClient/', RouterProfil)
 app.use('/api/favori/', RouteFavori)
+app.use("/api/rendezVous", RouteRDV) 
 
 app.get('/', (req, res) => {
     res.send("hello word")
