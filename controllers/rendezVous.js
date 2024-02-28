@@ -1,5 +1,6 @@
 // Importez le modèle RendezVous et d'autres dépendances nécessaires
 const RendezVous = require('../models/rendezVous');
+const service = require('../models/service');
 
 // Définissez votre fonction pour ajouter un rendez-vous
 async function ajouterRDV(utilisateurID,employeID, serviceId, date) {
@@ -30,5 +31,14 @@ async function ajouterRDV(utilisateurID,employeID, serviceId, date) {
   }
 }
 
+async function getRDV(utilisateurID){
+  const rdv = await RendezVous.find({ utilisateurID: utilisateurID }).populate('employeID').populate('serviceId');
+  rdv.sort((a, b) => a.date > b.date ? 1 : -1);
+  return rdv;
+}
+
 // Exportez la fonction pour pouvoir l'utiliser dans d'autres fichiers
-module.exports = { ajouterRDV };
+module.exports = { 
+  ajouterRDV,
+  getRDV 
+};
