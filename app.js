@@ -45,7 +45,7 @@ app.use('/api/favori/', RouteFavori);
 app.use("/api/rendezVous", RouteRDV);
 
 app.get('/', (req, res) => {
-    res.send("hello word")
+    res.send("hello w dord")
 });
 
 module.exports = app;
