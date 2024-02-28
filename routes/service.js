@@ -7,7 +7,7 @@ const serviceService = new ServiceService();
 const multer = require('multer');
 
 const storage = multer.diskStorage({
-  destination: './public/Images',
+  destination: './public/Images/Service',
   filename: (req, file, cb) => {
     cb(null, Date.now() + '-' + file.originalname);
   }
