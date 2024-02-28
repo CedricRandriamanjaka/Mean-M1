@@ -31,14 +31,25 @@ async function ajouterRDV(utilisateurID,employeID, serviceId, date) {
   }
 }
 
-async function getRDV(utilisateurID){
-  const rdv = await RendezVous.find({ utilisateurID: utilisateurID }).populate('employeID').populate('serviceId');
-  rdv.sort((a, b) => a.date > b.date ? 1 : -1);
+async function getRDV(utilisateurID) {
+  const rdv = await RendezVous.find({ utilisateurID: utilisateurID })
+    .populate('employeID')
+    .populate('serviceId')
+    .sort({ date: -1 }); // Tri par ordre décroissant de date
   return rdv;
 }
+
+async function annuler(rdvID) {
+  const rdv = await RendezVous.findById(rdvID);
+  rdv.etat = false;
+  rdv.save();
+  return rdv;
+}
+
 
 // Exportez la fonction pour pouvoir l'utiliser dans d'autres fichiers
 module.exports = { 
   ajouterRDV,
-  getRDV 
+  getRDV,
+  annuler
 };

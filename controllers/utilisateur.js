@@ -196,6 +196,7 @@ async function getIndispoDatesRendezVous(utilisateur, debut, fin, service) {
         const rendezVous = await RendezVous.find({
             employeID: utilisateur,
             serviceId:service._id,
+            etat : true,
             date: { $gte: debut, $lte: fin }
         });
 

@@ -39,7 +39,20 @@ router.get('/:userID',async (req,res) => {
   const {userID} = req.params;
   try{
     const resultat = await controllerRDV.getRDV(userID);
-    res.status(200).json(resultat);
+      res.status(200).json(resultat);
+
+  }
+  catch (error){
+    console.error('Erreur lors de l\'ajout du rendez-vous :', error);
+    return res.status(500).json({ success: false, message: 'Erreur lors de l obtention du rendez-vous.' });
+  }
+});
+
+router.post('/annuler/:rdvID',async (req,res) => {
+  const {rdvID} = req.params;
+  try{
+    const resultat = await controllerRDV.annuler(rdvID);
+      res.status(200).json(resultat);
 
   }
   catch (error){
