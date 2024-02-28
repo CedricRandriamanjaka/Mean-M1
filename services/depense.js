@@ -66,6 +66,18 @@ class DepenseService {
     }
   }
 
+  async deleteDepense(id) {
+    try {
+      const deletedDepense = await Depense.findByIdAndDelete(id);
+      if (!deletedDepense) {
+        throw new Error('Depense not found');
+      }
+      return { message: 'Depense deleted successfully' };
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
   async getTypeDepense() {
     try {
       const types = await DepenseType.find();

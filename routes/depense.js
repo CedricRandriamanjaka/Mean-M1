@@ -62,4 +62,15 @@ router.get("/annee=:annee/mois=:mois/jour=:jour", async (req, res) => {
   }
 });
 
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await depenseService.deleteDepense(id);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
+
 module.exports = router;
