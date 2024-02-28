@@ -14,6 +14,8 @@ const RouteRDV = require("./routes/rendezVous");
 
 var apiCompetences = require("./routes/competence");
 var apiServices = require("./routes/service");
+var apiProfilServices = require("./routes/profilService");
+var apiDepenses = require("./routes/depense");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,6 +24,8 @@ app.use(cors());
 
 app.use("/api/services", apiServices)
 app.use("/api/competences", apiCompetences) 
+app.use("/api/profilService", apiProfilServices)
+app.use("/api/depenses", apiDepenses)
 
 var mongoURI = "mongodb+srv://Cedric:Cedric@meanproject.vuk6uvm.mongodb.net/?retryWrites=true&w=majority";
 

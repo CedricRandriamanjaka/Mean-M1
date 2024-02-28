@@ -34,7 +34,11 @@ const utilisateur = mongoose.Schema({
     etat: {
         type: String
     },
-    competences : [{type : Schema.Types.ObjectId , ref : 'Competence'}]
+    competences : [{type : Schema.Types.ObjectId , ref : 'Competence'}],
+    image: {
+        type: String,
+        required: false
+    }
 })
 
 module.exports = mongoose.model('Utilisateur', utilisateur);
