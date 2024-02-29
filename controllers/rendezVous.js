@@ -39,6 +39,14 @@ async function getRDV(utilisateurID) {
   return rdv;
 }
 
+async function getRDVEmploye(utilisateurID) {
+  const rdv = await RendezVous.find({ employeID: utilisateurID })
+    .populate('utilisateurID')
+    .populate('serviceId')
+    .sort({ date: -1 }); // Tri par ordre décroissant de date
+  return rdv;
+}
+
 async function annuler(rdvID) {
   const rdv = await RendezVous.findById(rdvID);
   rdv.etat = false;
@@ -51,5 +59,6 @@ async function annuler(rdvID) {
 module.exports = { 
   ajouterRDV,
   getRDV,
-  annuler
+  annuler,
+  getRDVEmploye
 };
