@@ -1,7 +1,7 @@
 const Service = require('../models/service');
 
 class ServiceService {
-  async createService(data, file) {
+  async createService(data) {
     const {
       nomService,
       description,
@@ -32,7 +32,7 @@ class ServiceService {
         commission,
         dateDebut,
         dateFin,
-        image: file ? file.filename : null,
+        image: null,
         competences: JSON.parse(competences),
       });
       await service.save();
@@ -65,7 +65,7 @@ class ServiceService {
     }
   }
 
-  async updateService(id, updatedData, updatedImage) {
+  async updateService(id, updatedData) {
     const {
       nomService,
       description,
@@ -98,8 +98,8 @@ class ServiceService {
           commission,
           dateDebut,
           dateFin,
+          image: null,
           competences: JSON.parse(competences),
-          image: updatedImage.filename
         },
         { new: true }
       );

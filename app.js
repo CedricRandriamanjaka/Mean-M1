@@ -9,7 +9,6 @@ const RouterUtilisateur = require('./routes/utilisateur');
 const RouterHoraire = require('./routes/horaireEmploye');
 const RouterProfil = require('./routes/profilEmployeretClient');
 const RouteFavori = require("./routes/favori");
-const RouteRDV = require("./routes/rendezVous");
 
 
 var apiCompetences = require("./routes/competence");
@@ -17,6 +16,7 @@ var apiServices = require("./routes/service");
 var apiProfilServices = require("./routes/profilService");
 var apiDepenses = require("./routes/depense");
 var apiStatistiques = require("./routes/statistiques");
+const RouteRDV = require("./routes/rendezVous");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -28,6 +28,7 @@ app.use("/api/competences", apiCompetences)
 app.use("/api/profilService", apiProfilServices)
 app.use("/api/depenses", apiDepenses)
 app.use("/api/statistiques", apiStatistiques)
+app.use("/api/rendezVous", RouteRDV) 
 
 var mongoURI = "mongodb+srv://Cedric:Cedric@meanproject.vuk6uvm.mongodb.net/?retryWrites=true&w=majority";
 
@@ -44,7 +45,6 @@ app.use('/api/utilisateur/', RouterUtilisateur)
 app.use('/api/horaire/', RouterHoraire)
 app.use('/api/profilEmployeretClient/', RouterProfil)
 app.use('/api/favori/', RouteFavori)
-app.use("/api/rendezVous", RouteRDV) 
 
 app.get('/', (req, res) => {
     res.send("hello word")
